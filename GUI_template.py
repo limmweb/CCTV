@@ -553,10 +553,13 @@ class AboutDialog(QDialog):
 
         layout = QVBoxLayout()
         about_text = """<h2>Close-Circuit Telegram Vision</h2>
-Version 1.0<p><br>
+Version 1.1<p><br>
 Creator: Ivan Glinkin<br>
 LinkedIn: <a href="https://www.linkedin.com/in/ivanglinkin/" target=_blank>https://www.linkedin.com/in/ivanglinkin/</a><br>
-Twitter: <a href="https://twitter.com/glinkinivan" target=_blank>https://twitter.com/glinkinivan</a>"""
+Twitter: <a href="https://twitter.com/glinkinivan" target=_blank>https://twitter.com/glinkinivan</a>
+Fixed by: Aleksandr Limm<br>
+LinkedIn: <a href="https://www.linkedin.com/in/limmweb/" target=_blank>https://www.linkedin.com/in/limmweb/</a><br>
+Telegram Channel: <a href="https://t.me/limmweb" target=_blank>https://t.me/limmweb</a>"""
         label = QLabel()
         label.setAlignment(Qt.AlignCenter)
         label.setOpenExternalLinks(True)
