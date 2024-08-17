@@ -3,11 +3,11 @@ import sys
 import webbrowser
 from datetime import datetime
 from json import dump
-from os import getcwd, makedirs, path
+from os import getcwd, makedirs, path, remove
 
-from telethon import functions, types
-from telethon.errors import FloodWaitError
-from telethon.sync import TelegramClient
+from pyrogram import Client, filters
+from pyrogram.errors import FloodWait
+from pyrogram.raw import functions, types
 
 from backend.banners import (
     banner,
@@ -105,10 +105,15 @@ for directory in avatar_directory, report_json_directory, report_html_directory:
     if not path.exists(directory):
         makedirs(directory)
 
+# Remove existing session file if it exists to avoid database schema issues
+session_file = f"{telegram_name}.session"
+if path.exists(session_file):
+    remove(session_file)
+
 # Banner logo
 print(banner)
 
-# Printing geo cordinates
+# Printing geo coordinates
 print_geo_coordinater(latitude, longitude)
 
 # Printing city and country by coordinates
@@ -136,9 +141,10 @@ print_len_steps(len(step_coordinates), meters)
 # Initialize the Telegram client
 print_telegram_initialization()
 
-with TelegramClient(telegram_name, telegram_api_id, telegram_api_hash, system_version="CCTV") as client:
-    # Authenticate the client
-    client.connect()
+app = Client(telegram_name, api_id=telegram_api_id, api_hash=telegram_api_hash)
+
+async def main(app, timesleep, speed_kmh, step_coordinates, report_json_directory, filename):
+    await app.start()
     print_successfully()
 
     time_adjusted = round(0.6 * 3600 / speed_kmh)  # seconds to cover distance 600 meters
@@ -153,24 +159,25 @@ with TelegramClient(telegram_name, telegram_api_id, telegram_api_hash, system_ve
 
     # Initialize the dictionary to store user data
     users_data = {}
+    step = 0  # Initialize step here
 
     # Iterate over latitude and longitude pairs in step_coordinates
     print_start_harvesting()
     for latitude, longitude in step_coordinates:
         try:
-            result = client(
-                functions.contacts.GetLocatedRequest(
+            result = await app.invoke(
+                functions.contacts.GetLocated(
                     geo_point=types.InputGeoPoint(lat=latitude, long=longitude, accuracy_radius=500)
                 )
             )
-        except FloodWaitError as e:
-            print(f"[ ! ] FloodWaitError: {e}")
+        except FloodWait as e:
+            print(f"[ ! ] FloodWait: {e}")
 
             # Check if the waiting time exceeds the threshold
-            if e.seconds > 300:
-                print(f"[ ! ] Waiting time is too long, try again in {round(e.seconds / 3600)} hours. Exiting program.")
+            if e.value > 300:
+                print(f"[ ! ] Waiting time is too long, try again in {round(e.value / 3600)} hours. Exiting program.")
                 sys.exit()
-            countdown_timer(e.seconds)
+            countdown_timer(e.value)
             continue
 
         # Print the step and its coordinates
@@ -236,31 +243,33 @@ with TelegramClient(telegram_name, telegram_api_id, telegram_api_hash, system_ve
         if step != len(step_coordinates):
             countdown_timer(timesleep)
 
-# Download avatars
-if not skip_avatars:
-    download_avatars(f"{report_json_directory}{filename}.json", avatar_directory)
+    # Download avatars
+    if not skip_avatars:
+        download_avatars(f"{report_json_directory}{filename}.json", avatar_directory)
 
-# Generate the HTML file from JSON
-print_update_html()
-generate_html_from_json(f"{report_json_directory}{filename}.json", f"{report_html_directory}{filename}.html")
-print_successfully()
+    # Generate the HTML file from JSON
+    print_update_html()
+    generate_html_from_json(f"{report_json_directory}{filename}.json", f"{report_html_directory}{filename}.html")
+    print_successfully()
 
-# Print generated JSON and HTML files path
-print_files_stored(report_json_directory, report_html_directory, filename)
+    # Print generated JSON and HTML files path
+    print_files_stored(report_json_directory, report_html_directory, filename)
 
-# Combine all JSON files together and generate the global map
-print_combined_data()
-combine_data(report_json_directory, report_html_directory)
+    # Combine all JSON files together and generate the global map
+    print_combined_data()
+    combine_data(report_json_directory, report_html_directory)
 
-current_directory = getcwd()
-html_file_current = path.join(current_directory, report_html_directory + filename + ".html")
-html_file_combined = path.join(current_directory, "reports-html", "_combined_data.html")
+    current_directory = getcwd()
+    html_file_current = path.join(current_directory, report_html_directory + filename + ".html")
+    html_file_combined = path.join(current_directory, "reports-html", "_combined_data.html")
 
-for html_file in [path.realpath(html_file_current), path.realpath(html_file_combined)]:
-    try:
-        webbrowser.open("file://" + html_file)
-    except (ValueError, FileNotFoundError):
-        print(f"File {html_file} not found!")
+    for html_file in [path.realpath(html_file_current), path.realpath(html_file_combined)]:
+        try:
+            webbrowser.open("file://" + html_file)
+        except (ValueError, FileNotFoundError):
+            print(f"File {html_file} not found!")
 
-# Finishing the application
-finishing_application()
+    # Finishing the application
+    finishing_application()
+
+app.run(main(app, timesleep, speed_kmh, step_coordinates, report_json_directory, filename))
