@@ -17,9 +17,14 @@ banner = """
    ╚═╝   ╚══════╝╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝      ╚═══╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
    
 
-[ ! ] https://www.linkedin.com/in/IvanGlinkin/
+[ ! ] https://www.linkedin.com/in/IvanGlinkin
 [ ! ] https://x.com/glinkinivan
-[ ! ] https://t.me/EASM_HydrAttack                                                                                                               
+[ ! ] https://t.me/EASM_HydrAttack
+
+Fixed version by 
+[ ! ] https://www.linkedin.com/in/Limmweb
+[ ! ] https://t.me/Limmweb
+                                               
 """
 
 
