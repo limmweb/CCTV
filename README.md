@@ -1,6 +1,14 @@
-# CCTV
+# CCTV | Accounts aren't get banned version 
+ 
 Close-Circuit Telegram Vision revolutionizes location tracking with its open-source design and Telegram API integration. Offering precise tracking within 50-100 meters, users can monitor others in real-time for logistics or safety, redefining how we navigate our surroundings.
-PLEASE BE AWARED TELEGRAM STARTED BANNING ACCOUNTS FOR USING "FIND PEOPLE NEARBY" FEATURE
+
+❌ PLEASE BE AWARED TELEGRAM STARTED BANNING ACCOUNTS FOR USING "FIND PEOPLE NEARBY" FEATURE
+
+✔ This version is stable, no bans from Telegram. 
+
+⚠ However, its p͟r͟o͟h͟i͟b͟i͟t͟e͟d͟ ͟t͟o͟ ͟u͟s͟e͟ ͟p͟e͟r͟s͟o͟n͟a͟l͟ ͟a͟c͟c͟o͟u͟n͟t͟ ͟i͟n͟ ͟p͟r͟o͟g͟r͟a͟m͟ for your safety regard.
+
+Version Edited by Limmweb.
 
 Usage example:
 --------------
