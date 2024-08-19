@@ -8,7 +8,7 @@ Close-Circuit Telegram Vision revolutionizes location tracking with its open-sou
 
 ⚠ However, its p͟r͟o͟h͟i͟b͟i͟t͟e͟d͟ ͟t͟o͟ ͟u͟s͟e͟ ͟p͟e͟r͟s͟o͟n͟a͟l͟ ͟a͟c͟c͟o͟u͟n͟t͟ ͟i͟n͟ ͟p͟r͟o͟g͟r͟a͟m͟ for your safety regard.
 
-Version Edited by Limmweb.
+✒ Program Developed by Ivan Glinkin. Version Edited by Limmweb.
 
 Usage example:
 --------------
